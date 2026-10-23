@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep the sign when decoding the JSON number `-0` as `decimal.Decimal`
+  (including `Decimal` dict keys). It was decoded as `Decimal('0')`.
 - Include string Literal and Enum dictionary key constraints in generated JSON
   Schema `propertyNames`.
 - Fix JSON Schema references for dynamically defined types with empty names,

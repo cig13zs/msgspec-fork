@@ -1714,6 +1714,8 @@ class TestDecimal:
     @pytest.mark.parametrize(
         "msg",
         [
+            "0",
+            "-0",
             "123",
             "-123",
             "1e3",
@@ -1731,6 +1733,10 @@ class TestDecimal:
         sol = Decimal(msg)
         assert res == sol
         assert str(res) == str(sol)  # check trailing 0s
+
+    def test_decimal_dict_key_keeps_negative_zero(self):
+        res = msgspec.json.decode(b'{"-0":1}', type=dict[Decimal, int])
+        assert [str(k) for k in res] == ["-0"]
 
     @pytest.mark.parametrize(
         "msg",

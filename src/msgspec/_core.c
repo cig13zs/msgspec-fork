@@ -12640,6 +12640,20 @@ end_parsing:
                 return ms_decode_bigint((char *)start, p - start, type, path);
             }
         }
+        else if (
+            MS_UNLIKELY(is_negative && mantissa == 0)
+            && !(type->types & (
+                MS_TYPE_ANY | MS_TYPE_INT | MS_TYPE_INTENUM |
+                MS_TYPE_INTLITERAL | MS_TYPE_FLOAT
+            ))
+            && type->types & MS_TYPE_DECIMAL
+        ) {
+            /* `-0` can't be represented as an int64, parse it from the
+             * text so the decimal keeps its sign */
+            return ms_decode_decimal(
+                (char *)start, p - start, true, path, NULL
+            );
+        }
         else {
             if (is_negative) {
                 return ms_post_decode_int64(
