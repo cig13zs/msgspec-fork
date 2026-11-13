@@ -4,6 +4,8 @@
 
 - Keep the sign when decoding the JSON number `-0` as `decimal.Decimal`
   (including `Decimal` dict keys). It was decoded as `Decimal('0')`.
+- Fix `TypedDict` fields with `Annotated` outside `Required` or `NotRequired`
+  raising `TypeError`, preserving constraints and schema metadata.
 - Fix decoding ISO 8601 durations with very large day counts, which could
   overflow and return an incorrect `timedelta` or raise `OverflowError` instead
   of `ValidationError`.
